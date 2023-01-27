@@ -10,7 +10,7 @@ part 'timer_state.dart';
 class TimerCubit extends Cubit<TimerState> {
   TimerCubit() : super(TimerUpdated(_maxCounter, TimerStatus.initial));
   Timer? timer;
-  static int _maxCounter = 65;
+  static const int _maxCounter = 5;
   int _counter = _maxCounter;
 
   void startTimer() {

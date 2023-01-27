@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:timer/colors.dart';
 import 'package:timer/home.dart';
@@ -14,7 +16,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  Duration duration = const Duration(minutes: 5);
+  Duration duration = const Duration(minutes: 30);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,10 +66,11 @@ class _SettingsState extends State<Settings> {
               initialTimerDuration: duration,
               mode: CupertinoTimerPickerMode.hms,
               onTimerDurationChanged: (value) {
-                if (value != duration)
+                if (value != duration) {
                   setState(() {
-                    this.duration = duration;
+                    duration = value;
                   });
+                }
               },
             ),
           );
@@ -126,18 +129,33 @@ class _SettingsState extends State<Settings> {
                         _showTimerPicker();
                       },
                       child: Container(
-                          height: 40.0,
-                          width: 90.0,
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 116, 150, 123),
-                            //color: const Color(0x001F363D),
-                            borderRadius: BorderRadius.circular(10),
-                          )),
+                        height: 40.0,
+                        width: 90.0,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 116, 150, 123),
+                          //color: const Color(0x001F363D),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          formatTime(duration),
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
                     )
                   ],
                 ),
               ),
             )));
+  }
+
+  String formatTime(Duration duration) {
+    final formattedString = [
+      duration.inHours % 24,
+      duration.inMinutes % 60,
+      duration.inSeconds % 60,
+    ].map((e) => e.toString().padLeft(2, '0')).join(":");
+    return formattedString;
   }
 
   Widget beginSoundContainer() {
